@@ -3,6 +3,7 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/uaccess.h>
+#include <linux/version.h>
 
 #define DEVICE_NAME "led-control"
 #define CLASS_NAME "led"
@@ -34,7 +35,11 @@ static int __init led_ctrl_init(void) {
     }
     printk(KERN_WARNING "%s: registered correctly with major number %d\n", __func__, major_number);
 
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 0, 0)
     led_class = class_create(CLASS_NAME);
+#else
+    led_class = class_create(THIS_MODULE, CLASS_NAME);
+#endif
     if (IS_ERR(led_class)) {
         unregister_chrdev(major_number, DEVICE_NAME);
         printk(KERN_ALERT "%s: Failed to register device class\n", __func__);
