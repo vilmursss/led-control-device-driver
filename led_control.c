@@ -181,7 +181,7 @@ static void handle_input(const char *input) {
 
     // Parse the input string
     if (sscanf(input, "%d:%9s", &pin, action) != 2) {
-        set_last_error("Invalid input format");
+        set_last_error("Invalid input format\n");
         return;
     }
 
@@ -193,7 +193,7 @@ static void handle_input(const char *input) {
     } else if (strcmp(action, "blink") == 0) {
         gpio_blink(pin, 5000); // Blink for 5 second
     } else {
-        set_last_error("Unknown action: %s", action);
+        set_last_error("Unknown action: %s\n", action);
     }
 }
 
